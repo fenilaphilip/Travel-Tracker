@@ -7,13 +7,13 @@
     <link rel="stylesheet" href="./styles/main.css">
 </head>
 <body>
-    <form>
+    <form action="/add" method="post">
         <input type="text" name="country">
         <button type="submit">Add Country</button>
     </form>
     <%- include('partials/map.ejs') %>
-    <div>
-        <h2>Total Countries you visited : <%= total %></h2>
+    <div >
+        <h2 class="total-count">Total Countries you visited : <%= total %></h2>
     </div>
 </body>
 </html>

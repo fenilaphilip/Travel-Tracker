@@ -24,6 +24,14 @@ app.get("/", async (req, res) => {
     });
 });
 
+app.post("/add",(req,res)=>{
+     const newly_visited = req.body.country;
+     console.log(newly_visited);
+     res.render("index.ejs",{
+        total:countries.length,
+     });
+});
+
 async function MarkCountriesVisted() {
     let countries_visited = [];
     const result = await db.query("SELECT country_code FROM visited_countries");
