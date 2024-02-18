@@ -21,6 +21,7 @@ app.get("/", async (req, res) => {
     countries = await MarkCountriesVisted();
     res.render("index.ejs",{
         total: countries.length,
+        countries:countries,
     });
 });
 
@@ -29,6 +30,7 @@ app.post("/add",(req,res)=>{
      console.log(newly_visited);
      res.render("index.ejs",{
         total:countries.length,
+        countries:countries,
      });
 });
 
