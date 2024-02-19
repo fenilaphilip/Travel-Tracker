@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Travel Tracker</title>
-    <link rel="stylesheet" href="./styles/main.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel Tracker</title>
+  <link rel="stylesheet" href="./styles/main.css">
 </head>
+
 <body>
-    <form action="/add" method="post">
-        <input type="text" name="country" autofocus placeholder="<%= locals.error ? error : 'Enter country name'%>">
-        <button type="submit">Add Country</button>
-    </form>
-    <%- include('partials/map.ejs') %>
-    <div >
-        <h2 class="total-count">Total Countries you visited : <%= total %></h2>
-    </div>
-    <%- include('partials/script.ejs') %>
+  <form action="/add" method="post">
+    <input type="text" name="country" autofocus placeholder="<%= locals.error ? error : 'Enter country name'%>">
+    <button type="submit">Add Country</button>
+  </form>
+  <%- include('partials/map.ejs') %>
+  <div>
+    <h2 class="total-count">Total Countries you visited : <%= total %></h2>
+  </div>
+  <%- include('partials/script.ejs') %>
 </body>
+
 </html>
