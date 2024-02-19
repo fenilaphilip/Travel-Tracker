@@ -25,13 +25,31 @@ app.get("/", async (req, res) => {
     });
 });
 
-app.post("/add",(req,res)=>{
-     const newly_visited = req.body.country;
-     console.log(newly_visited);
-     res.render("index.ejs",{
-        total:countries.length,
-        countries:countries,
-     });
+app.post("/add",async(req,res)=>{
+     const newly_visited_country= req.body.country;
+     console.log(newly_visited_country);
+     try{
+        const result = await db.query("SELECT country_code FROM countries WHERE LOWER(country_name)=$1",[newly_visited_country.toLowerCase()]);
+        const newly_visited_country_code = result.rows[0].country_code;
+        console.log(newly_visited_country_code);
+        try{
+           await db.query("INSERT INTO visited_countries(country_code) VALUES($1)",[newly_visited_country_code]);
+           res.redirect("/");
+        }catch(err){
+            res.render("index.ejs",{
+                total: countries.length,
+                countries:countries,
+                error: "Country has already been added, try again.",
+            });
+        }
+     }catch(err){
+        console.log(err);
+        res.render("index.ejs",{
+            total: countries.length,
+            countries:countries,
+            error:"Country name does not exist, try again.",
+         });
+     }  
 });
 
 async function MarkCountriesVisted() {
