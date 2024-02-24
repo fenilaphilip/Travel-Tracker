@@ -25,6 +25,10 @@ app.get("/", async (req, res) => {
     });
 });
 
+app.get("/new",(req, res)=>{
+    res.render("partials/new.ejs");
+});
+
 app.post("/add", async (req, res) => {
     const newly_visited_country = req.body.country;
     console.log(newly_visited_country);
