@@ -19,14 +19,39 @@ app.use(bodyParser.urlencoded({ extended: true }));
 let countries;
 app.get("/", async (req, res) => {
     countries = await MarkCountriesVisted();
+    const users = await getAllUsers();
+    // console.log(`users : ` + JSON.stringify(users));
+
     res.render("index.ejs", {
         total: countries.length,
         countries: countries,
+        users: users,
+
     });
 });
 
-app.get("/new",(req, res)=>{
+async function getAllUsers() {
+    const result = await db.query("SELECT * FROM users")
+    let users = [];
+    result.rows.forEach((user) => {
+        users.push(user);
+    });
+    return users;
+}
+
+app.get("/new", (req, res) => {
     res.render("partials/new.ejs");
+});
+
+app.post("/user", (req, res) => {
+    // console.log(req.body);
+    if (req.body.add === "new") {
+        res.render("new.ejs");
+    } else {
+        current_user_id = req.body.user;
+        // console.log(`current_user_id : ` + current_user_id);
+        res.redirect("/");
+    }
 });
 
 app.post("/add", async (req, res) => {
