@@ -16,9 +16,10 @@ db.connect();
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-let countries;
+
+let current_user_id = 1;
 app.get("/", async (req, res) => {
-    countries = await MarkCountriesVisted();
+    const countries = await MarkCountriesVisted(current_user_id);
     const users = await getAllUsers();
     // console.log(`users : ` + JSON.stringify(users));
 
@@ -39,20 +40,29 @@ async function getAllUsers() {
     return users;
 }
 
-app.get("/new", (req, res) => {
-    res.render("partials/new.ejs");
-});
-
 app.post("/user", (req, res) => {
     // console.log(req.body);
     if (req.body.add === "new") {
-        res.render("new.ejs");
+        res.render("./partials/new.ejs");
     } else {
         current_user_id = req.body.user;
         // console.log(`current_user_id : ` + current_user_id);
         res.redirect("/");
     }
 });
+
+app.post("/new", async (req, res) => {
+    const new_user_name = req.body.name;
+    const new_user_choosed_color = req.body.color;
+    const new_user = await capitalizeFirstLetter(new_user_name);
+    await db.query("INSERT INTO users(name,color) VALUES($1,$2) RETURNING * ;",
+        [new_user, new_user_choosed_color]);
+    res.redirect("/");
+});
+
+async function capitalizeFirstLetter(name) {
+    return name.charAt(0).toUpperCase() + name.slice(1);
+};
 
 app.post("/add", async (req, res) => {
     const newly_visited_country = req.body.country;
@@ -81,9 +91,9 @@ app.post("/add", async (req, res) => {
     }
 });
 
-async function MarkCountriesVisted() {
+async function MarkCountriesVisted(user_id) {
     let countries_visited = [];
-    const result = await db.query("SELECT country_code FROM visited_countries");
+    const result = await db.query("SELECT country_code FROM visited_countries WHERE user_id=$1", [user_id]);
     result.rows.forEach((country) => {
         countries_visited.push(country.country_code);
     });

@@ -1,10 +1,10 @@
 <%- include('header.ejs') %>
 
-<div>
+<div class="container">
 
   <h1>Add a Family Member</h1>
 
-  <form>
+  <form action="/new" method="post">
 
     <p>What's your name?</p>
     <input type="text" name="name">
@@ -42,7 +42,7 @@
     <label for="pink"><span class="pink"></span></label>
 
     <div>
-      <button  class="button" type="submit">Add</button>
+      <button class="button" type="submit">Add</button>
     </div>
   </form>
 
